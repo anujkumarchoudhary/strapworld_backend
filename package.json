@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --project tsconfig.server.json server.ts",
-    "build": "tsc --project tsconfig.server.json",
-    "start": "node dist/server.js"
+   "dev": "ts-node-dev --respawn --transpile-only --project tsconfig.server.json server.ts",
+  "build": "tsc --project tsconfig.server.json",
+  "start": "node dist/server.js"
   },
   "dependencies": {
     "@next/env": "^16.3.8",
