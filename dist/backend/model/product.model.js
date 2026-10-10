@@ -202,4 +202,6 @@ const ProductSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
+// Index for sorting products by creation date.
+ProductSchema.index({ createdAt: -1 });
 exports.default = mongoose_1.default.model("Product", ProductSchema);

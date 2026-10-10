@@ -7,38 +7,6 @@ exports.deleteProduct = exports.updateProduct = exports.getProduct = exports.get
 const product_model_1 = __importDefault(require("../model/product.model"));
 const uploadToCloudinary_1 = require("../utils/uploadToCloudinary");
 // CREATE PRODUCT
-// export const createProduct = async (req: Request, res: Response) => {
-//   try {
-//     // Check image
-//     if (!req.file) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Product image is required",
-//       });
-//     }
-//     // Upload image to Cloudinary
-//     const uploadedImage = await uploadToCloudinary(
-//       req.file.buffer,
-//       "strapworld/products",
-//     );
-//     // Add Cloudinary image information
-//     req.body.image = uploadedImage.secure_url;
-//     req.body.imagePublicId = uploadedImage.public_id;
-//     // Create product
-//     const product = await Product.create(req.body);
-//     return res.status(201).json({
-//       success: true,
-//       message: "Product created successfully",
-//       data: product,
-//     });
-//   } catch (error: any) {
-//     console.error("Create product error:", error);
-//     return res.status(500).json({
-//       success: false,
-//       message: error.message || "Failed to create product",
-//     });
-//   }
-// };
 const createProduct = async (req, res) => {
     try {
         const files = req.files;
@@ -130,12 +98,15 @@ exports.createProduct = createProduct;
 const getProducts = async (req, res) => {
     try {
         const products = await product_model_1.default.find()
+            .select("title description button image labels slug status createdAt relatedProducts productOverview technicalOverview faqData")
             .populate({
             path: "relatedProducts.productId",
             select: "title description button image labels slug",
         })
-            .sort({ createdAt: -1 });
-        res.status(200).json({
+            .sort({ createdAt: -1 })
+            .lean()
+            .exec();
+        return res.status(200).json({
             success: true,
             count: products.length,
             data: products,
@@ -143,9 +114,9 @@ const getProducts = async (req, res) => {
     }
     catch (error) {
         console.error("Get products error:", error);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
-            message: error.message || "Failed to fetch products",
+            message: error instanceof Error ? error.message : "Failed to fetch products",
         });
     }
 };

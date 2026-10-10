@@ -93,7 +93,7 @@ const HeadingPartSchema = new Schema<IHeadingPart>(
     style: String,
     weight: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const LabelSchema = new Schema<ILabel>(
@@ -105,7 +105,7 @@ const LabelSchema = new Schema<ILabel>(
     color: String,
     bgColor: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ProductImageSchema = new Schema<IProductImage>(
@@ -115,7 +115,7 @@ const ProductImageSchema = new Schema<IProductImage>(
       required: true,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ProductOverviewSchema = new Schema<IProductOverview>(
@@ -146,7 +146,7 @@ const ProductOverviewSchema = new Schema<IProductOverview>(
 
     button: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const SpecificationSchema = new Schema<ISpecification>(
@@ -177,7 +177,7 @@ const SpecificationSchema = new Schema<ISpecification>(
     },
     remarks: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const TechnicalOverviewSchema = new Schema<ITechnicalOverview>(
@@ -208,7 +208,7 @@ const TechnicalOverviewSchema = new Schema<ITechnicalOverview>(
 
     button: String,
   },
-  { _id: false }
+  { _id: false },
 );
 
 const RelatedProductSchema = new Schema<IRelatedProduct>(
@@ -219,7 +219,7 @@ const RelatedProductSchema = new Schema<IRelatedProduct>(
       required: true,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const FAQSchema = new Schema<IFAQ>(
@@ -233,7 +233,7 @@ const FAQSchema = new Schema<IFAQ>(
       required: true,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const FAQDataSchema = new Schema<IFAQData>(
@@ -250,7 +250,7 @@ const FAQDataSchema = new Schema<IFAQData>(
       default: [],
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const ProductSchema = new Schema<IProduct>(
@@ -309,7 +309,10 @@ const ProductSchema = new Schema<IProduct>(
   },
   {
     timestamps: true,
-  }
+  },
 );
+
+// Index for sorting products by creation date.
+ProductSchema.index({ createdAt: -1 });
 
 export default mongoose.model<IProduct>("Product", ProductSchema);
