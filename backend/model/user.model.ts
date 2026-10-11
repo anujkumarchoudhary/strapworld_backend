@@ -34,7 +34,7 @@ const userSchema = new Schema<IUser>(
     // },
     isActive: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   { timestamps: true }

@@ -5,18 +5,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectDB = connectDB;
 const mongoose_1 = __importDefault(require("mongoose"));
-let isConnected = false;
 async function connectDB() {
-    if (isConnected) {
-        return;
-    }
     const MONGODB_URI = process.env.MONGODB_URI;
     if (!MONGODB_URI) {
-        throw new Error("MONGODB_URI is not defined in .env");
+        throw new Error("MONGODB_URI is not defined in environment variables");
+    }
+    // Reuse an existing connection.
+    if (mongoose_1.default.connection.readyState === 1) {
+        return;
+    }
+    // Wait if a connection is already being established.
+    if (mongoose_1.default.connection.readyState === 2) {
+        await mongoose_1.default.connection.asPromise();
+        return;
     }
     try {
-        const connection = await mongoose_1.default.connect(MONGODB_URI);
-        isConnected = connection.connection.readyState === 1;
+        await mongoose_1.default.connect(MONGODB_URI, {
+            serverSelectionTimeoutMS: 10000,
+            maxPoolSize: 10,
+        });
         console.log("✅ MongoDB connected");
     }
     catch (error) {
