@@ -59,7 +59,7 @@ const userSchema = new mongoose_1.Schema({
     // },
     isActive: {
         type: Boolean,
-        default: true,
+        default: false,
     },
 }, { timestamps: true });
 exports.default = mongoose_1.default.models.User ||
